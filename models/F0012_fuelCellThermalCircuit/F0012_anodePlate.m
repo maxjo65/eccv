@@ -1,0 +1,16 @@
+function dT_an = F0012_anodePlate(T_m, T_an, T_cp, T_amb, par)
+% parameters
+C  = par.C_an;
+R4 = par.R4;
+R6 = par.R6;
+R9 = par.R9;
+
+% output
+dT_an = 1./C .*( ...
+                    -(1/R4 + 1/R6 + 1/R9).*T_an + ...
+                        1/R4 .* T_m  + ...
+                        1/R9 .* T_cp + ...
+                        1/R6 .* T_amb ...
+                );
+
+end
