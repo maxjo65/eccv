@@ -30,8 +30,8 @@ n     = 2;         % [-]         - moles of electrons transfered per mole hydrog
 E0    = 1.229;     % [V]         - standard potential
 P_atm = 1.01325e5; % [Pa]        - atm. pressure
 p0    = 1e5;       % [Pa]        - std. pressure
-% dh    = 285.8e3;   % [J/mol]     - heat of formation (liquid)
-dh    = 241.8e3;   % [J/mol]     - heat of formation (vapor)
+dh    = 285.8e3;   % [J/mol]     - heat of formation (liquid)
+% dh    = 241.8e3;   % [J/mol]     - heat of formation (vapor)
 
 % total pressures
 % P_an = p_H2 + p_H2O_an + p_N2_an;
