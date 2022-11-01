@@ -1,11 +1,16 @@
-function [V, Q_gen] = F0003_outputVoltage(j, p_an, p_ca, P_sat, lambda_m, T, par)
+function [V, Q_gen] = F0003_outputVoltage(I, p_an, p_ca, p_sat, lambda_m, T, par)
 % ref: Control-Oriented Modeling and Analysis for Automotive Fuel Cell Systems
 % authors: Jay T. Pukrushpan, Huei Peng, Anna G. Stefanopoulou
 % J. Dyn. Sys., Meas., Control. Mar 2004
 % https://doi.org/10.1115/1.1648308
 
+% specify output sizes
+Q_gen = 0;
+V     = 0;
+
 % parameters
 A = par.A_fc; % [cm2]       - cell area
+j = I ./ A;
 
 % partial pressures
 p_H2     = p_an(1); % [Pa] - hydrogen partial pressure
@@ -36,8 +41,8 @@ P_ca = p_O2 + p_H2O_ca + p_N2_ca;
 E = E0 - 8.5e-4 .* (T-298.15) + R*T/(n*F) * log(p_H2./p0 .* sqrt(p_O2./p0));
 
 % activation overvoltage
-v0 = 0.279 - 8.5e-4 .* (T - 298.15) + 4.3085e-5 .* T .* (log((P_ca/P_atm - P_sat./P_atm)/1.01325) + 1/2 * log(0.1173*(P_ca/P_atm - P_sat./P_atm)/1.01325));
-va = (-1.618e-5 * T + 1.618e-2) .* ( p_O2./P_atm./0.1173 + P_sat./P_atm ).^2 + (1.8e-4 * T - 0.166).*(p_O2./ P_atm/0.1173 + P_sat./P_atm) + (-5.8e-4 * T + 0.5736);
+v0 = 0.279 - 8.5e-4 .* (T - 298.15) + 4.3085e-5 .* T .* (log((P_ca/P_atm - p_sat./P_atm)/1.01325) + 1/2 * log(0.1173*(P_ca/P_atm - p_sat./P_atm)/1.01325));
+va = (-1.618e-5 * T + 1.618e-2) .* ( p_O2./P_atm./0.1173 + p_sat./P_atm ).^2 + (1.8e-4 * T - 0.166).*(p_O2./ P_atm/0.1173 + p_sat./P_atm) + (-5.8e-4 * T + 0.5736);
 V_act = v0 + va.*(1 - exp(-c1.*j));
 
 % ohmic overvoltage
@@ -50,7 +55,7 @@ R_ohm   = t_m ./ sigma_m;
 V_ohm   = j .* R_ohm;
 
 % concentration overvoltage
-temp         = (p_O2./P_atm./0.1173 + P_sat./P_atm);
+temp         = (p_O2./P_atm./0.1173 + p_sat./P_atm);
 c2           = (8.66e-5 .* T - 0.068) .* temp + ( -1.60e-4 * T + 0.54);
 c2(temp < 2) = (7.16e-4 .* T - 0.622) .* temp + ( -1.45e-3 * T + 1.68);
 c3           = 2;
