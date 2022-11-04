@@ -38,7 +38,7 @@ dh    = 285.8e3;   % [J/mol]     - heat of formation (liquid)
 P_ca = p_O2 + p_H2O_ca + p_N2_ca;
 
 % reversible voltage
-E = E0 - 8.5e-4 .* (T-298.15) + R*T/(n*F) * log(p_H2./p0 .* sqrt(p_O2./p0));
+E = E0 - 8.5e-4 .* (T-298.15) + R*T/(n*F) * log(p_H2./p0 .* sqrt( p_O2./p0));
 
 % activation overvoltage
 v0 = 0.279 - 8.5e-4 .* (T - 298.15) + 4.3085e-5 .* T .* (log((P_ca/P_atm - p_sat./P_atm)/1.01325) + 1/2 * log(0.1173*(P_ca/P_atm - p_sat./P_atm)/1.01325));
